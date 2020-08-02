@@ -32,7 +32,7 @@ def BeautifulSoup_HTML(data):
     try:
         bSoup = BeautifulSoup(data, 'html.parser')
         for text in bSoup.find_all('p'):
-        x_data = x_data + str(text) + '\n'
+            x_data = x_data + str(text) + '\n'
     except Exception as ex:
         print('Please install required packages.')
     return x_data
