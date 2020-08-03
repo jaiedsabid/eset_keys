@@ -9,22 +9,25 @@ from bs4 import BeautifulSoup
 def filterKeys(data):
     ''' Filter out keys and rearrange from web data. '''
     patX = r'<p>([\w\d\-]+)<\/p>'
-    keys_list = re.findall(patX, data)
-    ex_keys = ''
-    keys_num = 0
-    for key_ in keys_list:
-        keys_num += 1
-        ex_keys = ex_keys + str(keys_num) + ') ' + key_ + '\n'
-    return ex_keys
+    try:
+        keys_list = re.findall(patX, data)
+        ex_keys = ''
+        keys_num = 0
+        for key_ in keys_list:
+            keys_num += 1
+            ex_keys = ex_keys + str(keys_num) + ') ' + key_ + '\n'
+        return ex_keys
+    except Exception as ex:
+        print('Unable to retrive keys!')
 
 def getWebData():
     ''' Get data from web '''
     url = 'https://t2bot.ru/en/esetkeys/'
     try:
         data = urlopen(url=url).read()
+        return str(data)
     except Exception as ex:
         print('Please check your internet connection.')
-    return str(data)
 
 def BeautifulSoup_HTML(data):
     ''' Parse data from web page '''
@@ -33,9 +36,9 @@ def BeautifulSoup_HTML(data):
         bSoup = BeautifulSoup(data, 'html.parser')
         for text in bSoup.find_all('p'):
             x_data = x_data + str(text) + '\n'
+        return x_data
     except Exception as ex:
         print('Please install required packages.')
-    return x_data
     
 
 def main():
@@ -48,8 +51,9 @@ def main():
     try:
         with open(path_, 'w') as file:
             file.write(eset_keys)
+        print('Keys saved. Location: {0}'.format(path_))
     except Exception as ex:
-        print('Can not save the key file. Error Code: {0}'.format(str(ex)))
+        print('No keys generated.')
 
 if __name__ == '__main__':
     main()
